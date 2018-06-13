@@ -13,7 +13,7 @@ export class Builder extends Worker
             let structure = structures[i];
             let hitsPercentage : number = (structure.hits / structure.hitsMax) * 100;
 
-            if(hitsPercentage < 50)
+            if(hitsPercentage < 100)
                 result.push(structure);
         }
         return result;
@@ -21,7 +21,7 @@ export class Builder extends Worker
 
     public static run(creep : Creep) :void
     {
-        let memory : MEM.creepMem = creep.memory as MEM.creepMem;
+        let memory : MEM.CreepMemory = creep.memory as MEM.CreepMemory;
 
         let structures : Structure[] = this.checkForBuildingsRequiringRepairWork(creep);
         if(structures.length > 0)

@@ -1,18 +1,24 @@
-import { ErrorMapper } from "utils/ErrorMapper";
+import { ErrorMapper } from "./utils/ErrorMapper";
 import {Harvester} from "./Harvester";
 import {Upgrader} from "./Upgrader";
 import {Builder} from "./Builder";
 import * as MEM from "./Mem";
 import { Worker } from "./Worker";
+import {RoomManager} from "./RoomManager";
 //import {Upgrader} from "./Upgrader";
 
 function MainLoop(){
   //console.log(`Current game tick is ${Game.time}`);
 
+  for(let room in Game.rooms)
+  {
+    RoomManager.CalculateSourcesLimits(Game.rooms[room]);
+  }
+
   for(let name in Game.creeps)
   {
     let creep : Creep = Game.creeps[name];
-    let crmem : MEM.creepMem = creep.memory as MEM.creepMem;
+    let crmem : MEM.CreepMemory = creep.memory as MEM.CreepMemory;
 
     if(Worker.checkVitals(creep))
     {

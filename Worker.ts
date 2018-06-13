@@ -43,7 +43,7 @@ export class Worker extends Creep
     public static checkVitals(creep : Creep) : boolean
     {
         let timeLeft : number | undefined = creep.ticksToLive;
-        let memory : MEM.creepMem = creep.memory as MEM.creepMem;
+        let memory : MEM.CreepMemory = creep.memory as MEM.CreepMemory;
 
         if(timeLeft == undefined || timeLeft >= 1400)
         {
