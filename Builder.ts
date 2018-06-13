@@ -1,7 +1,7 @@
 import * as MEM from "./Mem";
-import { Worker } from "./Worker";
+import { CreepWorker } from "./CreepWorker";
 
-export class Builder extends Worker
+export class Builder extends CreepWorker
 {
     public static checkForBuildingsRequiringRepairWork(creep : Creep): Structure[]
     {
@@ -30,7 +30,7 @@ export class Builder extends Worker
 
             if(creep.carry.energy < creep.carryCapacity)
             {
-                Worker.mine(creep);
+                CreepWorker.mine(creep);
             }
             else if(creep.repair(structures[0]) == ERR_NOT_IN_RANGE)
             {

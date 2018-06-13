@@ -1,6 +1,6 @@
-import { Worker } from "./Worker";
+import { CreepWorker } from "./CreepWorker";
 
-export class Harvester extends Worker
+export class Harvester extends CreepWorker
 {
     public static run(creep: Creep):void
     {

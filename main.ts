@@ -3,7 +3,7 @@ import {Harvester} from "./Harvester";
 import {Upgrader} from "./Upgrader";
 import {Builder} from "./Builder";
 import * as MEM from "./Mem";
-import { Worker } from "./Worker";
+import { CreepWorker } from "./CreepWorker";
 import {RoomManager} from "./RoomManager";
 //import {Upgrader} from "./Upgrader";
 
@@ -20,7 +20,7 @@ function MainLoop(){
     let creep : Creep = Game.creeps[name];
     let crmem : MEM.CreepMemory = creep.memory as MEM.CreepMemory;
 
-    if(Worker.checkVitals(creep))
+    if(CreepWorker.checkVitals(creep))
     {
       if(crmem.role == 'Harvester')
         Harvester.run(creep);

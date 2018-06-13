@@ -1,7 +1,7 @@
 import * as MEM from "./Mem";
-import { Worker } from "./Worker";
+import { CreepWorker } from "./CreepWorker";
 
-export class Upgrader extends Worker
+export class Upgrader extends CreepWorker
 {
     public static run(creep : Creep):void
     {

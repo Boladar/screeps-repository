@@ -2,7 +2,7 @@ import * as MEM from "./Mem";
 
 const MIN_LIFE_VALUE_BEFORE_RENEVAL = 700;
 
-export class Worker extends Creep
+export class CreepWorker extends Creep
 {
     public static mine(creep : Creep) : void
     {

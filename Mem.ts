@@ -3,6 +3,7 @@ export interface CreepMemory {
   upgrading : boolean;
   building : boolean;
   needsRenew : boolean;
+  workplaceID : string;
 }
 
 export interface RoomMemory{
