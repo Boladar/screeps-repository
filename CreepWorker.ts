@@ -2,11 +2,74 @@ import * as MEM from "./Mem";
 
 const MIN_LIFE_VALUE_BEFORE_RENEVAL = 700;
 
+export interface CreepRoleInterface
+{
+    Work():void
+}
+
 export class CreepWorker
 {
-    static PickHarvestingSpot(creep: Creep) : Source | null
+    public creep : Creep;
+    private memory : MEM.CreepMemory;
+
+    //memory variables
+    private _role : string = this.memory.role;
+    get role():string{
+        return this._role;
+    }
+    set role(theRole:string){
+        this._role = theRole;
+    }
+
+    private _mining : boolean  = this.memory.mining;
+    get mining():boolean{
+        return this._mining;
+    }
+    set mining(theMining:boolean){
+        this._mining = theMining;
+    }
+
+    private _upgrading : boolean = this.memory.upgrading;
+    get upgrading():boolean{
+        return this._upgrading;
+    }
+    set upgrading(theUpgrading : boolean){
+        this._upgrading = theUpgrading;
+    }
+
+    private _buidling : boolean = this.memory.upgrading;
+    get building():boolean{
+        return this._buidling;
+    }
+    set building(theBuilding : boolean){
+        this._buidling = theBuilding;
+    }
+
+    private _needsRenew : boolean = this.memory.needsRenew;
+    get needsRenew():boolean{
+        return this._needsRenew;
+    }
+    set needsRenew(theNeed : boolean){
+        this._needsRenew = theNeed;
+    }
+
+    private _workplaceID : string = this.memory.workplaceID;
+    get workplaceID():string{
+        return this._workplaceID;
+    }
+    set workplaceID(workplaceID : string){
+        this._workplaceID = workplaceID;
+    }
+
+    public constructor(creep : Creep)
     {
-        let availableSpotsInRoom : Source[] = creep.room.find(FIND_SOURCES);
+        this.creep = creep;
+        this.memory = creep.memory as MEM.CreepMemory;
+    }
+
+    private PickHarvestingSpot() : Source | null
+    {
+        let availableSpotsInRoom : Source[] = this.creep.room.find(FIND_SOURCES);
         if(availableSpotsInRoom.length == 0)
             return null;
 
@@ -19,7 +82,7 @@ export class CreepWorker
         });
 
         availableSpotsInRoom.sort((a,b)=>{
-            if( creep.room.findPath(creep.pos,a.pos).length < creep.room.findPath(creep.pos,b.pos).length)
+            if( this.creep.room.findPath(this.creep.pos,a.pos).length < this.creep.room.findPath(this.creep.pos,b.pos).length)
                 return -1;
             else
                 return 1;
@@ -32,13 +95,13 @@ export class CreepWorker
         return availableSpotsInRoom[0];
     }
 
-    public static mine(creep : Creep) : void
+    protected Mine() : void
     {
-        let memory : MEM.CreepMemory = creep.memory as MEM.CreepMemory;
+        let memory : MEM.CreepMemory = this.creep.memory as MEM.CreepMemory;
         let availableSpot : Source | null;
 
         if(memory.workplaceID == "" || memory.workplaceID == undefined)
-            availableSpot = this.PickHarvestingSpot(creep);
+            availableSpot = this.PickHarvestingSpot();
         else
             availableSpot = Game.getObjectById(memory.workplaceID);
 
@@ -56,16 +119,16 @@ export class CreepWorker
         }
         else if(memory.mining == true)
         {
-            if(creep.harvest(availableSpot) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(availableSpot, {visualizePathStyle: {stroke: '#eeff00'}});
-                creep.say('🔄 harvest');
+            if(this.creep.harvest(availableSpot) == ERR_NOT_IN_RANGE) {
+                this.creep.moveTo(availableSpot, {visualizePathStyle: {stroke: '#eeff00'}});
+                this.creep.say('🔄 harvest');
             }
         }
     }
 
-    private static pickRenovationPlaces(creep : Creep) : StructureSpawn | null
+    private pickRenovationPlaces() : StructureSpawn | null
     {
-        var renovationPlaces : StructureSpawn[] = creep.room.find(FIND_MY_SPAWNS);
+        var renovationPlaces : StructureSpawn[] = this.creep.room.find(FIND_MY_SPAWNS);
         if(renovationPlaces.length > 0)
         {
             return renovationPlaces[0];
@@ -74,9 +137,9 @@ export class CreepWorker
             return null;
     }
 
-    public static renew(creep : Creep): void
+    private renew(): void
     {
-        var renovationPlace : StructureSpawn | null = this.pickRenovationPlaces(creep);
+        var renovationPlace : StructureSpawn | null = this.pickRenovationPlaces();
 
         if(renovationPlace == null)
         {
@@ -84,17 +147,17 @@ export class CreepWorker
             return;
         }
 
-        if(renovationPlace.renewCreep(creep) == ERR_NOT_IN_RANGE)
+        if(renovationPlace.renewCreep(this.creep) == ERR_NOT_IN_RANGE)
         {
-            creep.moveTo(renovationPlace, {visualizePathStyle: {stroke: '#42f835'}});
-            creep.say("🔋 Renew");
+            this.creep.moveTo(renovationPlace, {visualizePathStyle: {stroke: '#42f835'}});
+            this.creep.say("🔋 Renew");
         }
     }
 
-    public static checkVitals(creep : Creep) : boolean
+    private checkVitals() : boolean
     {
-        let timeLeft : number | undefined = creep.ticksToLive;
-        let memory : MEM.CreepMemory = creep.memory as MEM.CreepMemory;
+        let timeLeft : number | undefined = this.creep.ticksToLive;
+        let memory : MEM.CreepMemory = this.creep.memory as MEM.CreepMemory;
 
         if(timeLeft == undefined || timeLeft >= 1400)
         {
@@ -105,7 +168,7 @@ export class CreepWorker
         if(timeLeft <= MIN_LIFE_VALUE_BEFORE_RENEVAL || memory.needsRenew)
         {
             memory.needsRenew = true;
-            this.renew(creep);
+            this.renew();
             return false;
         }
 

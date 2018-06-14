@@ -1,11 +1,11 @@
 import * as MEM from "./Mem";
-import { CreepWorker } from "./CreepWorker";
+import { CreepWorker, CreepRoleInterface} from "./CreepWorker";
 
-export class Builder extends CreepWorker
+export class Builder extends CreepWorker implements CreepRoleInterface
 {
-    public static checkForBuildingsRequiringRepairWork(creep : Creep): Structure[]
+    private checkForBuildingsRequiringRepairWork(): Structure[]
     {
-        let structures : Structure[] = creep.room.find(FIND_STRUCTURES);
+        let structures : Structure[] = this.creep.room.find(FIND_STRUCTURES);
         let result : Structure[] = [];
 
         for(let i = 0; i < structures.length;i++)
@@ -19,48 +19,46 @@ export class Builder extends CreepWorker
         return result;
     }
 
-    public static run(creep : Creep) :void
+    public Work() :void
     {
-        let memory : MEM.CreepMemory = creep.memory as MEM.CreepMemory;
-
-        let structures : Structure[] = this.checkForBuildingsRequiringRepairWork(creep);
+        let structures : Structure[] = this.checkForBuildingsRequiringRepairWork();
         if(structures.length > 0)
         {
-            memory.building = false;
+            this.building = false;
 
-            if(creep.carry.energy == 0)
+            if(this.creep.carry.energy == 0)
             {
-                CreepWorker.mine(creep);
+                this.Mine();
             }
-            else if(creep.repair(structures[0]) == ERR_NOT_IN_RANGE)
+            else if(this.creep.repair(structures[0]) == ERR_NOT_IN_RANGE)
             {
-                creep.moveTo(structures[0], {visualizePathStyle: {stroke: '#ffffff'}});
-                creep.say('🔨 repair')
+                this.creep.moveTo(structures[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                this.creep.say('🔨 repair')
             }
         }
         else
         {
-            if(memory.building && creep.carry.energy == 0)
+            if(this.building && this.creep.carry.energy == 0)
             {
-                memory.building = false;
-                creep.say('🔄 harvest');
+                this.building = false;
+                this.creep.say('🔄 harvest');
             }
-            if(!memory.building && creep.carry.energy == creep.carryCapacity)
+            if(!this.building && this.creep.carry.energy == this.creep.carryCapacity)
             {
-                memory.building = true;
-                creep.say('🔨 build');
+                this.building = true;
+                this.creep.say('🔨 build');
             }
 
-            if(memory.building)
+            if(this.building)
             {
-                var structuresToBuild = creep.room.find(FIND_CONSTRUCTION_SITES);
+                var structuresToBuild = this.creep.room.find(FIND_CONSTRUCTION_SITES);
 
-                if(creep.build(structuresToBuild[0]) == ERR_NOT_IN_RANGE)
-                    creep.moveTo(structuresToBuild[0],{visualizePathStyle: {stroke: '#ffffff'}});
+                if(this.creep.build(structuresToBuild[0]) == ERR_NOT_IN_RANGE)
+                    this.creep.moveTo(structuresToBuild[0],{visualizePathStyle: {stroke: '#ffffff'}});
             }
             else
             {
-                CreepWorker.mine(creep);
+                this.Mine();
             }
         }
     }

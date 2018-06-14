@@ -1,39 +1,42 @@
 import * as MEM from "./Mem";
-import { CreepWorker } from "./CreepWorker";
+import { CreepWorker, CreepRoleInterface } from "./CreepWorker";
 
-export class Upgrader extends CreepWorker
+export class Upgrader extends CreepWorker implements CreepRoleInterface
 {
-    public static run(creep : Creep):void
+    public Work():void
     {
-        let memory : MEM.CreepMemory = creep.memory as MEM.CreepMemory;
+        let memory : MEM.CreepMemory = this.creep.memory as MEM.CreepMemory;
 
-        if(memory.upgrading && creep.carry.energy == 0) {
+        if(memory.upgrading && this.creep.carry.energy == 0) {
             memory.upgrading = false;
-            creep.say('🔄 harvest');
+            this.creep.say('🔄 harvest');
 	    }
-	    if(!memory.upgrading && creep.carry.energy == creep.carryCapacity) {
+	    if(!memory.upgrading && this.creep.carry.energy == this.creep.carryCapacity) {
 	        memory.upgrading = true;
-	        creep.say('⚡ upgrade');
+	        this.creep.say('⚡ upgrade');
 	    }
 	    if(memory.upgrading) {
 
-            let a : StructureController | undefined = creep.room.controller;
+            let a : StructureController | undefined = this.creep.room.controller;
             if (a == undefined)
                 return;
 
             let controller : StructureController = a;
 
-            if(creep.upgradeController(controller) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(controller, {visualizePathStyle: {stroke: '#ffffff'}});
+            if(this.creep.upgradeController(controller) == ERR_NOT_IN_RANGE) {
+                this.creep.moveTo(controller, {visualizePathStyle: {stroke: '#ffffff'}});
             }
         }
         else {
-            var sources = creep.room.find(FIND_SOURCES);
-            if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
+            var sources = this.creep.room.find(FIND_SOURCES);
+            if(this.creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
+                this.creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
             }
         }
+    }
 
-        creep.memory = memory;
+    public static run(creep : Creep):void
+    {
+
     }
 }
