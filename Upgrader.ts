@@ -33,5 +33,7 @@ export class Upgrader extends CreepWorker
                 creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
             }
         }
+
+        creep.memory = memory;
     }
 }

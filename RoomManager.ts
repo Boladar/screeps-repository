@@ -24,6 +24,9 @@ export class RoomManager
     {
         let activeSources : Source[] =  room.find(FIND_SOURCES_ACTIVE);
 
+        if(Memory.sources == undefined)
+            Memory.sources = {};
+
         for(var i = 0; i < activeSources.length;i++)
         {
             let source : Source = activeSources[i];
@@ -34,7 +37,9 @@ export class RoomManager
             let memory : MEM.SourceMemory = Memory.sources[source.id] as MEM.SourceMemory;
             memory.creepLimit = this.GetSourceCreepLimit(room,source);
 
-            Memory.sources[source.id] = memory;
+            if(memory.activeHarvesters == null || memory.activeHarvesters == undefined)
+                memory.activeHarvesters = 0;
+
         }
     }
 

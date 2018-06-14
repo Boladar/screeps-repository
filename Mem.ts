@@ -1,5 +1,6 @@
 export interface CreepMemory {
   role : string;
+  mining : boolean;
   upgrading : boolean;
   building : boolean;
   needsRenew : boolean;
@@ -12,4 +13,5 @@ export interface RoomMemory{
 
 export interface SourceMemory{
   creepLimit : number;
+  activeHarvesters : number;
 }
