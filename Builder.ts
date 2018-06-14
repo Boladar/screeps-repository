@@ -28,7 +28,7 @@ export class Builder extends CreepWorker
         {
             memory.building = false;
 
-            if(creep.carry.energy < creep.carryCapacity)
+            if(creep.carry.energy == 0)
             {
                 CreepWorker.mine(creep);
             }
@@ -48,7 +48,7 @@ export class Builder extends CreepWorker
             if(!memory.building && creep.carry.energy == creep.carryCapacity)
             {
                 memory.building = true;
-                creep.say('🔨 building');
+                creep.say('🔨 build');
             }
 
             if(memory.building)
@@ -60,10 +60,7 @@ export class Builder extends CreepWorker
             }
             else
             {
-                    var sources = creep.room.find(FIND_SOURCES);
-                    if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
-                    }
+                CreepWorker.mine(creep);
             }
         }
     }

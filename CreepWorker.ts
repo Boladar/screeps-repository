@@ -2,7 +2,7 @@ import * as MEM from "./Mem";
 
 const MIN_LIFE_VALUE_BEFORE_RENEVAL = 700;
 
-export class CreepWorker extends Creep
+export class CreepWorker
 {
     static PickHarvestingSpot(creep: Creep) : Source | null
     {
@@ -58,6 +58,7 @@ export class CreepWorker extends Creep
         {
             if(creep.harvest(availableSpot) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(availableSpot, {visualizePathStyle: {stroke: '#eeff00'}});
+                creep.say('🔄 harvest');
             }
         }
     }

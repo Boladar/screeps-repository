@@ -5,7 +5,7 @@ export class Harvester extends CreepWorker
 {
     public static run(creep: Creep):void
     {
-        if(creep.carry.energy < creep.carryCapacity)
+        if(creep.carry.energy == 0)
         {
             CreepWorker.mine(creep);
         }
