@@ -22,12 +22,7 @@ function MainLoop(){
 
     /*if(CreepWorker.checkVitals(creep))
     {
-      if(crmem.role == 'Harvester')
-        Harvester.run(creep);
-      if(crmem.role == 'Upgrader')
-        Upgrader.run(creep);
-      if(crmem.role == 'Builder')
-        Builder.run(creep);
+
     }*/
   }
 
@@ -46,6 +41,7 @@ function MainLoop(){
 
 
 console.log("NEW MAIN");
+
 // When compiling TS to JS and bundling with rollup, the line numbers and file names in error messages change
 // This utility uses source maps to get the line numbers and file names of the original, TS source code
 export const loop = ErrorMapper.wrapLoop(MainLoop);
