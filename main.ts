@@ -5,6 +5,7 @@ import {Builder} from "./Builder";
 import * as MEM from "./Mem";
 import { CreepWorker } from "./CreepWorker";
 import {RoomManager} from "./RoomManager";
+import {CreepManager} from "./CreepManager";
 //import {Upgrader} from "./Upgrader";
 
 function MainLoop(){
@@ -14,18 +15,8 @@ function MainLoop(){
   {
     RoomManager.CalculateSourcesLimits(Game.rooms[room]);
   }
-
-  for(let name in Game.creeps)
-  {
-    let creep : Creep = Game.creeps[name];
-    let crmem : MEM.CreepMemory = creep.memory as MEM.CreepMemory;
-
-    /*if(CreepWorker.checkVitals(creep))
-    {
-
-    }*/
-  }
-
+  //manage creeps
+    manager.ManageCreeps();
 
   // Automatically delete memory of missing creeps
   if (Memory.creeps == null)
@@ -41,7 +32,7 @@ function MainLoop(){
 
 
 console.log("NEW MAIN");
-
+let manager : CreepManager = CreepManager.getInstance();
 // When compiling TS to JS and bundling with rollup, the line numbers and file names in error messages change
 // This utility uses source maps to get the line numbers and file names of the original, TS source code
 export const loop = ErrorMapper.wrapLoop(MainLoop);

@@ -24,13 +24,23 @@ export class CreepManager
         this.Creeps.forEach(creep => {creep.Work();});
     }
 
-    private GetCreepsFromMemory()
+    public GetCreepsFromMemory()
     {
         for(var name in Game.creeps)
         {
             let gameCreep = Game.creeps[name];
             let memory = gameCreep.memory as MEM.CreepMemory;
+
+            if(memory === undefined)
+            {
+                console.log("memory is undefined");
+                memory = {} as MEM.CreepMemory;
+            }
             let creep : any;
+
+            if(memory.role == undefined)
+                memory.role = "";
+
 
             if(memory.role == 'Harvester')
                 creep = new Harvester(gameCreep);
@@ -43,6 +53,7 @@ export class CreepManager
 
             this.Creeps.push(creep);
         }
+        console.log("creeps list size:" + this.Creeps.length);
     }
 
     static getInstance():CreepManager

@@ -13,7 +13,7 @@ export class CreepWorker
     private memory : MEM.CreepMemory;
 
     //memory variables
-    private _role : string = this.memory.role;
+    private _role : string
     get role():string{
         return this._role;
     }
@@ -21,7 +21,7 @@ export class CreepWorker
         this._role = theRole;
     }
 
-    private _mining : boolean  = this.memory.mining;
+    private _mining : boolean
     get mining():boolean{
         return this._mining;
     }
@@ -29,7 +29,7 @@ export class CreepWorker
         this._mining = theMining;
     }
 
-    private _upgrading : boolean = this.memory.upgrading;
+    private _upgrading : boolean
     get upgrading():boolean{
         return this._upgrading;
     }
@@ -37,7 +37,7 @@ export class CreepWorker
         this._upgrading = theUpgrading;
     }
 
-    private _buidling : boolean = this.memory.upgrading;
+    private _buidling : boolean
     get building():boolean{
         return this._buidling;
     }
@@ -45,7 +45,7 @@ export class CreepWorker
         this._buidling = theBuilding;
     }
 
-    private _needsRenew : boolean = this.memory.needsRenew;
+    private _needsRenew : boolean
     get needsRenew():boolean{
         return this._needsRenew;
     }
@@ -53,7 +53,7 @@ export class CreepWorker
         this._needsRenew = theNeed;
     }
 
-    private _workplaceID : string = this.memory.workplaceID;
+    private _workplaceID : string
     get workplaceID():string{
         return this._workplaceID;
     }
@@ -65,6 +65,13 @@ export class CreepWorker
     {
         this.creep = creep;
         this.memory = creep.memory as MEM.CreepMemory;
+
+        this._role = this.memory.role;
+        this._mining = this.memory.mining;
+        this._upgrading = this.memory.upgrading;
+        this._buidling = this.memory.building;
+        this._needsRenew = this.memory.needsRenew;
+        this._workplaceID = this.memory.workplaceID;
     }
 
     private PickHarvestingSpot() : Source | null

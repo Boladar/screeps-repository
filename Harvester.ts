@@ -5,7 +5,7 @@ export class Harvester extends CreepWorker implements CreepRoleInterface
 {
     public Work():void
     {
-        if(this.creep.carry.energy == 0)
+        if(this.creep.carry.energy < this.creep.carryCapacity)
         {
             this.Mine();
         }
